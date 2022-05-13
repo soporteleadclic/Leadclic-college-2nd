@@ -1,9 +1,9 @@
 <template>
     <div class="container">
-        <template for:each={bikes} for:item="bike">
+        <template for:each={books} for:item="book">
             <c-tile 
-                key={bike.fields.Id.value} 
-                product={bike} 
+                key={book.primary_isbn10} 
+                product={book} 
                 ontileclick={handleTileClick}>
             </c-tile>
         </template>

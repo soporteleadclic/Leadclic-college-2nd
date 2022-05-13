@@ -1,8 +1,8 @@
 import { LightningElement } from 'lwc';
-import { bikes } from 'c/data';
+import { books } from 'c/data';
 
 export default class List extends LightningElement {
-    bikes = bikes;
+    books = books;
 
     handleTileClick(evt) {
         // This component wants to emit a productselected event to its parent

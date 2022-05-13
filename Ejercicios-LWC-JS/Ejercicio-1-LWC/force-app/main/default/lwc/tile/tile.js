@@ -6,7 +6,7 @@ export default class Tile extends LightningElement {
     tileClick() {
         const event = new CustomEvent('tileclick', {
             // detail contains only primitives
-            detail: this.product.fields.Id.value
+            detail: this.product.primary_isbn10
         });
         // Fire the event from c-tile
         this.dispatchEvent(event);
