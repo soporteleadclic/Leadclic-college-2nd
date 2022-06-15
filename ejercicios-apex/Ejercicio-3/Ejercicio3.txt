@@ -1,37 +1,79 @@
 /***********EJERCICIO 3************/
-@isTest
-public class CaseTriggerTest {
-    @testSetup
-    static void createData(){
-        List<Case> parentCases = new List<Case>();
-		parentCases.add(new Case(Status='New', Origin='Email',Priority='Medium', Subject='PadreConHijos');
-		parentCases.add(new Case(Status='New', Origin='Phone',Priority='Low', Subject='PadreSinHijos');
-        insert parentCases;
-		Case parentCase = [Select Id From Case limit 1];
-        insert new Case(Status='New', Origin='Phone',Priority='Low', parentId = parentCase.Id);
+@istest
+public class CaseDescriptionTest {
+    @TestSetup
+    static void MassiveData200(){
+        List<Case> listcase = new List<Case>();
+        for (Integer i = 0; i<200 ;  i++){
+            case b = new case (Subject='case Parent '+i , Origin='Web');
+            listcase.add(b);
+        }
+        insert listcase;               
     }
-    @isTest
-    static void actualizaconConHijos(){
 
-        Case casoConHijos = [SELECT Id,Subject, Priority FROM Case WHERE Subject =  'PadreConHijos'];
-		Case casoHijo = [SELECT Id,CaseNumber FROM Case WHERE ParentId =:  casoConhijos.Id];
-		casoConHijos.priority = 'Low';
+    @istest
+    public static void SinHijosMasivoTest() {
+        List<Case> listcase = new list<case>(); 
+        for (case a : [SELECT id,Description,Subject FROM Case]){
+            a.Description='prueba';
+            listcase.add(a);
+        }
         Test.startTest();
-        update casoConHijos;
-		Test.stopTest();
-		casoConHijos = [SELECT Id,Description FROM Case WHERE Subject =  'PadreConHijos'];
-		system.assertEquals(casoConHijos.Description, casoHijo.caseNumber,'La descripción no ha sido actualizada correctamente');
+        update listcase;
+        Test.stopTest();
+        
+        case P1update = [SELECT id,Description,Subject FROM Case WHERE Subject='case Parent 100'];
+        System.assertEquals('No tiene casos hijos', P1update.Description, 'El caso no se actualizado');
+        system.debug(P1update.Description);
     }
-	
-	@isTest
-    static void actualizaconSinHijos(){
 
-        Case casoSinHijos = [SELECT Id,Subject, Priority FROM Case WHERE Subject =  'PadreSinHijos'];
-		casoSinHijos.priority = 'High';
+    @istest
+    public static void ConHijosTest() {
+        case P1 = [SELECT id,Description,Subject FROM Case WHERE Subject='case Parent 0'];
+        case H1 = new case (Subject ='Case SON 1', Origin='Web' , ParentId=P1.Id);
+        case H2 = new case (Subject ='Case SON 2', Origin='Web' , ParentId=P1.Id);
+        insert H1;
+        insert H2;
+        P1.Description='prueba';
+
         Test.startTest();
-        update casoSinHijos;
-		Test.stopTest();
-		casoSinHijos = [SELECT Id,Description FROM Case WHERE Subject =  'PadreSinHijos'];
-		system.assertEquals(casoConHijos.Description, 'Caso sin hijos','La descripción no ha sido actualizada correctamente');
+        update P1;
+        Test.stopTest();
+        
+        case P1update = [SELECT id,Description,Subject FROM Case WHERE Subject='case Parent 0'];
+        case H1update = [SELECT id,CaseNumber FROM Case WHERE Subject='Case SON 1'];
+        case H2update = [SELECT id,CaseNumber FROM Case WHERE Subject='Case SON 2'];
+        System.assertEquals('los casos hijos son(' +H1update.CaseNumber+', '+H2update.CaseNumber+')', P1update.Description, 'El caso no se actualizado');
+        system.debug(P1update.Description);
+    }
+
+    @istest
+    public static void ConHijosMasivoTest() {
+        List<Case> listcaseParent = new list<case>();
+        List<Case> listcaseSon = new list<case>();
+        Integer NcasosHijos= 2 ;
+        for (case a : [SELECT id,Description,Subject FROM Case]){
+            for (Integer i=0; i<NCasosHijos; i++) {
+                case b = new case (Subject ='Case SON '+i, Origin='Web' , ParentId=a.Id);
+                listcaseSon.add(b);
+            }
+            a.Description='prueba';
+            listcaseParent.add(a);
+        }
+        insert listcaseSon;
+
+        Test.startTest();
+        update listcaseParent;
+        Test.stopTest();
+        
+        case P1update = [SELECT id,Description,Subject FROM Case WHERE Subject='case Parent 100'];
+        case [] H1update = [SELECT id,CaseNumber FROM Case WHERE ParentId= :P1update.id ORDER BY id];
+        list<String> CaseNumbers = new list<String> ();
+        for (case a :H1update ) {
+            string b = a.CaseNumber;
+            CaseNumbers.add(b);
+        }
+        System.assertEquals('los casos hijos son'+ CaseNumbers, P1update.Description, 'El caso no se actualizado de manera correcta');
+        system.debug(P1update.Description);
     }
 }

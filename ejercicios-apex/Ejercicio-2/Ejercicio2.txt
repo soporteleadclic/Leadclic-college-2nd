@@ -1,23 +1,18 @@
-trigger CaseTrigger on Case (before update) {
-	if (Trigger.isBefore){
-		if (Trigger.isUpdate){
-			beforeUpdate(Trigger.new, Trigger.newMap);
-		}
-	}
-	
-	public static beforeUpdate(List<Case> newList, Map<Id,Case> newMap){
-		Map<Id,String> mapaHijos = new Map<Id, String>();
-		List<Case> casesToUpdate = new List
-		for(Case c: [Select Id, CaseNumber, ParentId from Case where ParentId IN: newList]){
-			if(!mapaHijos.containsKey(c.ParentId)){
-				mapaHijos.put(c.ParentId, c.CaseNumber);
-			} else{
-				mapaHijos.put(c.ParentId, mapaHijos.get(c.ParentId) + c.CaseNumber);
-			}
-		}
-		
-		for(Case c : newList){
-			c.Description = (mapaHijos.containsKey(c.Id)?mapaHijos.get(c.Id):"Casos sin hijos")
-		}
-	}
+trigger CaseDescription on Case (before update) {
+    
+    Map<Id,Case> caseWithPCase = new Map<Id,Case>(
+        [SELECT Id,(SELECT Id,Casenumber FROM Cases) FROM case WHERE Id IN :Trigger.New]);
+
+    for(Case a : Trigger.new) {
+        list<String> idhijos= new list<String>();
+        if (caseWithPCase.get(a.Id).cases.size() == 0) {
+            a.Description='No tiene casos hijos';
+        } else {
+            for (case b :caseWithPCase.get(a.Id).cases){
+                idhijos.add (b.CaseNumber);
+                a.Description = 'los casos hijos son' + idhijos;
+                System.debug('se actualizo un caso');
+            }
+        }
+    }
 }

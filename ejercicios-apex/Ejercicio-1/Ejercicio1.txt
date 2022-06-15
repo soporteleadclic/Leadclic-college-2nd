@@ -1,19 +1,35 @@
-public static List<Contact> ejercicio(List<Opportunity> opptys){
-	Set<id> accountsId = new set<id>();
-    List<Contact> contactList = new List<Contact>();
-	List<Contact> contactListUpdate = new List<Contact>();
-	for (Opportunity oppty : opptys) {
-		accountsId.add(oppty.AccountId);  
-	}
-	for(Account acc :[Select Id,(SELECT ID, Email FROM Contacts ORDER BY CreatedDate DESC LIMIT 100) FROM Account WHERE Type = 'Prospect' and Id IN: accountsId]){
-		for (Contact c : acc.Contacts){
-			if(String.isBlank(c.Email)){
-				c.Email = "sinContacto@example.org";
-				contactListUpdate.add(c);
-			}
-			contactList.add(c);
-		}
-	}
-	update contactListUpdate;
-	return contactList;
+public with sharing class UpdateContact {
+    public static List<Contact> OportunitiesEmmailNull(List<Opportunity> listp) {
+        List<Contact> Updatects = new List<Contact>();      //Lista de contactos que sera actualizada la final.                
+        // Buscamos los id de las cuentas que estan realcionadas con las oportunidades.
+        Opportunity[] opaccid = [SELECT Account.id FROM Opportunity WHERE id IN :Listp];
+        List<id> idaccc = new list<id> ();                  //Lista de id de las cuentas relacionadas con las oportunidades. 
+        for (Opportunity j : opaccid){                      // Guardammos los Id.
+        idaccc.add (j.Account.id);
+        }
+        Account[] accccc = [SELECT id FROM Account WHERE id IN :idaccc];
+        // Buscamos las cuentas de tipo other
+        Account[] acctwithctt = [SELECT id FROM Account WHERE Type='Other' and id IN: idaccc];
+        List<id> idacccother = new list<id> ();             //listas de id de las cuentas de tipo other.
+        for (Account x : acctwithctt){                      //Guardamos los id.
+        idacccother.add (x.id);
+        }
+        // Buscamos los contactos que estan relacionados con las cuentas de tipo other y revisamos is el mail esta vacio o no y si esta vacio.
+        Contact[] cts = [SELECT id,firstName,lastName,email FROM Contact WHERE Account.id IN :idacccother ORDER BY Createddate LIMIT 50];
+        for (Contact i : cts){
+            if(i.email == Null){                            // lo actualizamos y lo agragamos a la lista
+                i.email ='sinContacto@example.org';
+                Updatects.add(i);
+                System.debug('Contanto que será modificado ' + i.FirstName + ', ' + i.LastName);
+            } else { 
+                System.debug('Contacto con email' + i.FirstName + ', ' + i.LastName +i.id);
+            }
+        }
+        if (Updatects.size() > 0 ){                         // revisamos si hemos encontrado algun contacto relacionado.- posibleente sea inenecesario.
+            Database.update(Updatects,false);               //Actualizamos los registros en caso de haberlos
+        } else {
+            System.debug('Oportunidades sin cuentas de tipo other');
+        }
+        return updatects;
+    }
 }
