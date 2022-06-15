@@ -1,19 +1,27 @@
-public static List<Contact> ejercicio(List<Opportunity> opptys){
-	Set<id> accountsId = new set<id>();
-    List<Contact> contactList = new List<Contact>();
-	List<Contact> contactListUpdate = new List<Contact>();
-	for (Opportunity oppty : opptys) {
-		accountsId.add(oppty.AccountId);  
-	}
-	for(Account acc :[Select Id,(SELECT ID, Email FROM Contacts ORDER BY CreatedDate DESC LIMIT 100) FROM Account WHERE Type = 'Prospect' and Id IN: accountsId]){
-		for (Contact c : acc.Contacts){
-			if(String.isBlank(c.Email)){
-				c.Email = "sinContacto@example.org";
-				contactListUpdate.add(c);
-			}
-			contactList.add(c);
-		}
-	}
-	update contactListUpdate;
-	return contactList;
-}
+ public static List<Contact> changecontactemail(List<Opportunity> newList) {
+
+        ID[] opportunityId = new list<ID>();
+        for (Integer i = 0; i < newlist.size(); i++) {
+         opportunityId.add(newList[i].AccountID);
+            system.debug(newList[i].AccountID);
+        }
+        List<Account> accounts =[SELECT Id FROM Account  WHERE Type LIKE 'Other' AND Id IN :opportunityId];
+        
+     opportunityId.clear();
+        for (Integer i = 0; i < accounts.size(); i++) {
+         opportunityId.add(accounts[i].Id);
+        }
+        List<Contact> contacts =[SELECT FirstName,Email
+        FROM Contact WHERE AccountID IN :opportunityId ORDER BY CreatedDate DESC LIMIT 50 ];
+        
+        List<Contact> contactsNewList = new List<Contact>();
+        for ( Integer i = 0; i <contacts.size();i++) {
+            if(contacts[i].Email== null|| contacts[i].Email==''){
+                contacts[i].email='sincontacto@example.org';
+                contactsNewList.add(contacts[i]);
+                
+            }
+        } 
+        update contactsNewList; 
+        return contactsNewList;
+    }

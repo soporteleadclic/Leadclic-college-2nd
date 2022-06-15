@@ -1,23 +1,30 @@
-trigger CaseTrigger on Case (before update) {
-	if (Trigger.isBefore){
-		if (Trigger.isUpdate){
-			beforeUpdate(Trigger.new, Trigger.newMap);
-		}
-	}
-	
-	public static beforeUpdate(List<Case> newList, Map<Id,Case> newMap){
-		Map<Id,String> mapaHijos = new Map<Id, String>();
-		List<Case> casesToUpdate = new List
-		for(Case c: [Select Id, CaseNumber, ParentId from Case where ParentId IN: newList]){
-			if(!mapaHijos.containsKey(c.ParentId)){
-				mapaHijos.put(c.ParentId, c.CaseNumber);
-			} else{
-				mapaHijos.put(c.ParentId, mapaHijos.get(c.ParentId) + c.CaseNumber);
-			}
-		}
-		
-		for(Case c : newList){
-			c.Description = (mapaHijos.containsKey(c.Id)?mapaHijos.get(c.Id):"Casos sin hijos")
-		}
-	}
+trigger ChildCaseNumbers on Case (before update) {
+    Map<Id, List<String>> ChildCase = new Map<Id, List<String>>();
+    
+    
+    for(Case c :[SELECT Id, ParentId, CaseNumber FROM Case WHERE ParentId IN :trigger.new]){
+     
+     if(!ChildCase.containsKey(c.ParentId)){
+         ChildCase.put(c.ParentId, new List<String>());
+          
+ }
+         ChildCase.get(c.ParentId).add(c.CaseNumber);
+     }
+ 
+     
+     for(Case casetrigger :trigger.new){
+     List<String> numberOfsonCase = ChildCase.get(casetrigger.Id);
+ 
+     if(numberOfsonCase != null){
+         // The list is not null, so combine its contents
+         casetrigger.Description = String.join(numberOfsonCase, ',');
+     }else{
+         // The list is null, so use some default text instead of the list
+         casetrigger.Description = 'No child cases.';
+     }
+     
+     
+     
+     }
+
 }

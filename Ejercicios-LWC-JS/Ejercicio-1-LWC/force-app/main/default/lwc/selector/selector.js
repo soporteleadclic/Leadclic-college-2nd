@@ -1,4 +1,4 @@
-import { LightningElement } from 'lwc';
+import { LightningElement} from 'lwc';
 
 export default class Selector extends LightningElement {
     selectedProductId;
@@ -6,4 +6,7 @@ export default class Selector extends LightningElement {
     handleProductSelected(evt) {
         this.selectedProductId = evt.detail;
     }
+  
+    
+
 }
