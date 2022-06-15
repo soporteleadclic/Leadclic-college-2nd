@@ -1,0 +1,34 @@
+.container {
+    border: 1px rgb(168, 166, 166) solid;
+    border-radius: 5px;
+    background-color: white;
+    margin:5px;
+    padding: 2px;
+    max-width: 110px;
+    display: flex;
+}
+
+.display_title {
+    font-weight: strong;
+}
+
+.multimedia {
+    max-width: 100px;
+}
+
+.container a {
+    text-decoration: none;
+}
+
+a:link {
+    color: rgb(159, 159, 159);
+}
+a:visited {
+    color: green;
+}
+a:hover {
+    color: hotpink;
+}
+a:active {
+    color: blue;
+}

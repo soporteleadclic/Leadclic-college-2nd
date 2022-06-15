@@ -1,0 +1,11 @@
+<template>
+    <div class="container">
+        <template for:each={movies} for:item="movie">
+            <c-tile 
+                key={movie.display_title} 
+                product={movie} 
+                ontileclick={handleTileClick}>
+            </c-tile>
+        </template>
+    </div>
+</template>
