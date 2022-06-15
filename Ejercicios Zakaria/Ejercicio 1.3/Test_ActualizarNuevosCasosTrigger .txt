@@ -1,0 +1,39 @@
+@isTest
+public class Test_ActualizarNuevosCasosTrigger {
+
+    @isTest static void TieneCasosHijos(){
+        Case cParent = new Case ();
+        insert cParent;
+        Id x = cParent.Id;
+        
+
+        Case cHijo1 = new Case(ParentId = x);
+		Case cHijo2 = new Case(ParentId = x);
+		insert cHijo1; 
+        insert cHijo2;
+        String descripcion = '00101031 00101032';
+		List<Case> res= new List<Case>();
+        Test.startTest();
+        	cParent.subject = 'atala@gmail.com';
+        	upsert cParent;
+        	res = [Select id, description from Case where id = :x];
+        Test.stopTest();
+        System.assertEquals(res.get(0).description, descripcion);
+
+    }
+    @isTest static void NO_TieneCasosHijos(){
+        Case cParent2 = new Case ();
+        insert cParent2;
+        Id x = cParent2.Id;
+        
+		List<Case> res= new List<Case>();
+        Test.startTest();
+        	cParent2.subject = 'pipi@gmail.com';
+        	upsert cParent2;
+        	res = [Select id, description from Case where id = :x];
+        	String s = res.get(0).description;
+        Test.stopTest();
+        System.assertEquals(s, 'Caso sin Hijos');
+
+    }
+}

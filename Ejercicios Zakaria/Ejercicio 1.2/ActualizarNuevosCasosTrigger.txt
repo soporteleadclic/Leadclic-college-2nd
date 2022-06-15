@@ -1,0 +1,18 @@
+trigger ActualizarNuevosCasosTrigger on Case (before update) {
+
+    List<Case> casosHijos = new List<case> ([SELECT Id, casenumber, parentid FROM Case WHERE parentId IN :Trigger.new ]);
+	
+    
+    for(Case c : Trigger.new){
+        c.description='';
+        for(Case x : casosHijos){
+            if(c.id == x.parentid){
+                c.Description=c.Description + ' ' + String.valueOf(x.casenumber);
+            }
+        }
+        if(c.Description==''){
+            c.Description ='Caso sin Hijos';
+        }
+        
+    }
+}

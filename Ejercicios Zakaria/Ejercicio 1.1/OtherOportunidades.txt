@@ -1,0 +1,23 @@
+public class OtherOportunidades {
+    public static List<Contact> otheropps (List<Opportunity> listopp){
+        
+        List<ID> listAccID = new List<ID>();
+        for(Opportunity opp : listopp){
+			listAccId.add(opp.accountid);
+        }
+        
+        List<Account> listAcc = new List<Account>([SELECT id from Account where id in :listAccId AND Type='Other']);
+        
+        List<Contact> listcontacts = new List<Contact>([SELECT id from Contact where accountID in :listAcc 
+                                                       ORDER BY CreatedDate desc]);
+
+        
+        for(Contact c : listcontacts){
+            if(String.isBlank(c.email)){
+                c.email='sinContacto@example.org';
+            }
+        }
+        
+        return listcontacts;
+    }
+}
