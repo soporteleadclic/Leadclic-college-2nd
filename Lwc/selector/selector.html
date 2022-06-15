@@ -1,0 +1,15 @@
+<template>
+    <div class="wrapper">
+    <header class="header">Select a Movie</header>
+    <section class="content">
+        <div class="columns">
+        <main class="main" >
+            <c-list onproductselected={handleProductSelected}></c-list>
+        </main>
+        <aside class="sidebar-second">
+            <c-detail producttitle={selectedProductTitle}></c-detail>
+        </aside>
+        </div>
+    </section>
+    </div>
+</template>
