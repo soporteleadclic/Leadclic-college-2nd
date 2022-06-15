@@ -1,8 +1,9 @@
 <template>
     <div class="container">
         <a onclick={tileClick}>
-            <div class="title">{product.title}</div>
-            <img class="product-img" src={product.book_image}></img>
+            <div class="title">{product.display_title}</div>
+            <img class="product-img" src={product.multimedia.src} alt="no image"></img>
         </a>
     </div>
 </template>
+
