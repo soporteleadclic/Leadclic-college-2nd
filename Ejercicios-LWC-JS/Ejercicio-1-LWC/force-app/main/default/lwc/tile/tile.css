@@ -1,3 +1,5 @@
+
+
 .container {
     border: 1px rgb(168, 166, 166) solid;
     border-radius: 5px;
@@ -7,18 +9,52 @@
     max-width: 110px;
     display: flex;
     
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 1200px;
+    margin-block: 2rem;
+    gap: 2rem; 
 }
 
-.title {
-    font-weight: strong;
-}
+ .title {
+    display: flex;
+    flex-direction: row-reverse;
+  background-image: url(/_slds/images/themes/lightning_blue/lightning_blue_background.png);  
+  align-items: center;
+height: 50px;
+color: rgb(255, 255, 255);
+text-transform: uppercase;
+padding: 1px;
+font-family: monospace;
+font-weight: 100;
+justify-content: center;
+text-decoration: overline;
+text-align: center;
+font-size: x-small;
+} 
 
 .product-img {
-    max-width: 100px;
+    max-width: 100%;
+    display: block;
+    object-fit: cover;
 }
+
+.card {
+    display: flex;
+    flex-direction: column;
+    width: clamp(10rem, calc(10rem + 2vw), 12rem);
+    overflow: hidden;
+    box-shadow: 0 .1rem 1rem rgba(0, 0, 0, 0.1);
+    border-radius: 1em;
+    background: #ECE9E6;
+  background: linear-gradient(to right, #FFFFFF, #ECE9E6);
+  
+  } 
+  
 
 a {
     text-decoration: none;
+    
 }
 
 a:link {
@@ -28,8 +64,8 @@ a:visited {
     color: green;
 }
 a:hover {
-    color: hotpink;
+    color: rgb(4, 101, 154);
 }
 a:active {
-    color: blue;
+    color: rgb(0, 92, 149);
 }

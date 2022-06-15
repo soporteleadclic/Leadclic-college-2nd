@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { books } from 'c/data';
+import { movies } from 'c/data';
 
 
 export default class Detail extends LightningElement {
@@ -14,7 +14,7 @@ export default class Detail extends LightningElement {
     // requested while switching between products
     set productId(value) {
         this._productId = value;
-        this.product = books.find(book => book.primary_isbn10 === value);
+        this.product = movies.find(movie => movie.date_updated === value);
     }
     
     // getter for productId

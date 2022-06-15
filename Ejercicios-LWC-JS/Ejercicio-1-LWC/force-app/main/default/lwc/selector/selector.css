@@ -27,7 +27,7 @@ body {
 .main{
   flex: 1;
   order: 2;
-  background: #eee;
+  background: rgb(243 243 243);
 }
 .sidebar-first{
   width: 20%;

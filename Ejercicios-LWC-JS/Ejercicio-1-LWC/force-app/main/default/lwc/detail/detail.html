@@ -1,20 +1,20 @@
 <template>
     <template if:true={product}>
         <div class="container">
-            <div>{product.title}</div>
-            <div class="price">{product.price}</div>
-            <div class="description">{product.description}</div>
-            <img class="product-img" src={product.book_image}></img>
-            <!--<p>
+            <h1>{product.display_title}</h1>
+            <h3 class="price">{product.headline}</h3>
+            <p class="description">{product.summary_short}</p>
+            <img class="product-img" src={product.multimedia.src}></img>
+     <!--        <p>
                 <lightning-badge label={product.fields.Material__c.value}></lightning-badge>
                 <lightning-badge label={product.fields.Level__c.value}></lightning-badge>
             </p>
             <p>
                 <lightning-badge label={product.fields.Category__c.value}></lightning-badge>
-            </p>-->
+            </p> -->
         </div>
     </template>
     <template if:false={product}>
-        <div>Select a book</div>
+        <div class="selectmoviedet">Select a Moovie</div>
     </template>
 </template>
