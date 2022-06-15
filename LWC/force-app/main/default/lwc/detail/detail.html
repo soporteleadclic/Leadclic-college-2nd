@@ -1,0 +1,22 @@
+<template>
+    <template if:true={product}>
+        <div class="container">
+            <div>{product.display_title}</div>
+            <div class="price">{product.headline}</div>
+            <div class="description">{product.summary_short}</div>
+            <img class="product-img" src={product.multimedia.src}></img>
+            <a class="description">{product.link.url}</a>
+
+            <!-- <p>
+                <lightning-badge label={product.fields.Material__c.value}></lightning-badge>
+                <lightning-badge label={product.fields.Level__c.value}></lightning-badge>
+            </p>
+            <p>
+                <lightning-badge label={product.fields.Category__c.value}></lightning-badge>
+            </p> -->
+        </div>
+    </template>
+    <template if:false={product}>
+        <div>Select a movie</div>
+    </template>
+</template>
