@@ -1,0 +1,24 @@
+function sustitucion (str) {
+    var salidaEsperada = "";
+    str=str.toLowerCase();
+    for(i=0;i<str.length;i++){
+
+        if(str.indexOf(str[i]) === str.lastIndexOf(str[i]))
+        salidaEsperada = salidaEsperada.concat("(");
+        else {
+            salidaEsperada = salidaEsperada.concat(")");
+        }
+    }
+
+    return (salidaEsperada)
+    
+}
+
+prueba1="pin"
+console.log(sustitucion(prueba1));
+
+prueba2="sucEde"
+console.log(sustitucion(prueba2));
+
+prueba3="¡Llueve a cántaros!"
+console.log(sustitucion(prueba3));

@@ -1,0 +1,52 @@
+@isTest
+private class DescriptionCaseNumber_Test {
+    
+    @isTest
+    static void descriptionTestMethod(){
+        
+        test.startTest();
+        
+    //Inserto caso padre
+        Case case1 = new Case();
+        case1.Status = 'New';
+        case1.Origin = 'Phone';
+        insert case1;
+
+    //Inserto caso hijo
+        Case case2 = new Case();
+        case2.Status = 'New';
+        case2.Origin = 'Phone';
+        case2.ParentId = case1.Id;
+        insert case2;
+        
+     //Inserto caso padre
+    	Case case3 = new Case();
+        case3.Status = 'Working';
+        case3.Origin = 'Web';
+        insert case3;
+
+    //Actualizo ambos casos para que entren en el trigger
+    
+        case1.subject = 'TEST PADRE';
+        update case1;
+
+        case2.subject = 'TEST HIJO';
+        update case2;
+        
+        case3.subject = 'TEST SIN DESCRIPCION';
+        update case3;
+        
+    List<Case> case4 = [Select Id, Description from Case where id =: case1.Id];
+        		System.assertNotEquals('Caso sin hijos', case4[0].Description);
+            
+        
+    List<Case> case5 = [Select Id, Description from Case where id =: case2.Id];
+                System.assertEquals('Caso sin hijos', case5[0].Description);
+            
+        
+	List<Case> case6 = [Select Id, Description from Case where id  =: case3.id];
+                System.assertEquals('Caso sin hijos', case6[0].Description);
+            test.stopTest();
+     	
+    }
+}

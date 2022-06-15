@@ -1,0 +1,31 @@
+function puntuacion(punt){ 
+
+
+const exclamacion  =["¡","!"];
+const interrogacion=["¿","?"];
+let counter=0;
+punt.forEach(element =>{ 
+    
+if(element.startsWith(exclamacion[0]) && element.endsWith(exclamacion[1])){
+       counter++;
+}
+if(element.startsWith(interrogacion[0]) && element.endsWith(interrogacion[1])){
+       counter++;
+}
+             
+});
+
+if(counter==1){
+    result="¡se ha encontrado 1 frase con buena puntuación!"
+}
+else 
+{result="¡se han encontrado "+ counter+" frases con buena puntuación!"
+}
+return result;
+}
+prueba1=["¡Hola mundo!","Qué tal estas?","¡Genial!"]
+console.log(puntuacion(prueba1));
+prueba2=["¿Hola Rosa¿","Cuánto tiempo!","Bien!"]
+console.log(puntuacion(prueba2));
+prueba3=["¿Adiós Juan?","¡Hasta otra!","Adiós!"]
+console.log(puntuacion(prueba3));

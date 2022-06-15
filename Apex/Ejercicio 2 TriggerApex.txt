@@ -1,0 +1,23 @@
+trigger DescriptionCaseNumber on Case (before update) {
+   
+    Map<Id, List<String>> parentWithChild = new Map<Id, List<String>>();
+
+    for(Case c :[SELECT Id, ParentId, CaseNumber FROM Case WHERE ParentId IN : Trigger.newMap.keySet()]){
+        
+        if(!parentWithChild.containsKey(c.ParentId)){
+            parentWithChild.put(c.ParentId, new List<String>());
+        }
+        
+        parentWithChild.get(c.ParentId).add(c.CaseNumber);
+    }
+    for(Case caso : Trigger.New){
+       List<String> childCases = parentWithChild.get(caso.Id);
+        
+        if(childCases != null){
+            caso.Description = String.join(childCases, ', ');
+        }else{
+        
+        caso.Description = 'Caso sin hijos';
+        }
+    }
+}

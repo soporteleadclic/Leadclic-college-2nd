@@ -1,0 +1,53 @@
+//Creo la clase
+public with sharing class fillContactEmail {
+    //Genero un metodo publico y que no va a devolver ningun tipo de dato
+    //El metodo espera una lista de oportunidades
+    public static List<Contact> fillContactEmail(List<Opportunity> newList) {
+        //Declaro las listas con las que voy a trabajar
+        List<String> lAccount = new List<String>();
+        List<String> lAccountOther = new List<String>();
+        List<Contact> lContact = new List<Contact>();
+
+        //Recorro la lista de Oportunidades
+        for(Opportunity oppIterator : newList){
+            //Compruebo que tengan cuenta ligada
+            if(string.isNotBlank(oppIterator.AccountId)){
+                //Si tienen cuenta ligada, me creo otra lista para guardar ese ID de Cuenta
+                lAccount.add(oppIterator.AccountId);
+            }
+        }
+        System.debug('lAccount ' + lAccount);
+
+        //Compruebo que la lista de cuenta no este vacia
+        if(!lAccount.isEmpty()){
+            //Consulto las cuentas que tengan ese ID de Cuenta
+            for(Account accIterator : [SELECT Id, Type FROM Account WHERE Id IN : lAccount]){
+                //Si el campo Type esta relleno y ademas tiene el valor Other
+                if ((string.isNotBlank(accIterator.Type) && accIterator.Type == 'Other')){
+                    //Genero una nueva lista de cuentas con estos registros
+                    lAccountOther.add(accIterator.Id);
+                }
+            }
+        }
+        
+        System.debug('lAccountOther ' + lAccountOther);
+
+        //Compruebo que la lista no venga vacia
+        if(!lAccountOther.isEmpty()){
+            //Consulto los contactos que tengan asociado esa cuenta, maximo 50 registros en orden de fecha de creación descendiente
+            for(Contact contIterator : [SELECT Id, email, AccountId FROM Contact WHERE AccountId IN : lAccountOther ORDER BY createddate DESC LIMIT 50]){
+                //Si el email esta vacio entra y le informo el valor sinContacto@example.org
+                if(string.isBlank(contIterator.email)){
+                    contIterator.email = 'sinContacto@example.org';
+                    //Lo añado en una lista para actualizar esos contactos
+                    lContact.add(contIterator);
+                }
+            }
+        }
+        //Compruebo que la lista de contactos no venga vacia para actualizar
+        if(!lContact.isEmpty()){
+            update lContact;
+        }
+        return lContact;
+    }
+}

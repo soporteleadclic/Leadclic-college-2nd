@@ -1,0 +1,28 @@
+function juntar(text){
+    test="";
+     if(text==null){
+    test="null";
+    }
+    else if(text.length==0)
+    {test="null";}
+    
+    else{
+text.forEach(element => test+="  "+element);
+        //console.log("t="+t)
+    }
+return test;
+} 
+const s=["Hola","Mundo"];
+const s1=["Esta","es","una","frase" ,"mas","larga"];
+const s3=[];
+const s2=null;
+
+const rs=juntar(s);
+const rs1=juntar(s1);
+const rs2=juntar(s2);
+const rs3=juntar(s3);
+
+console.log(rs);
+console.log(rs1);
+console.log(rs2);
+console.log(rs3);

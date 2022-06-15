@@ -1,0 +1,15 @@
+<template>
+    <template if:true={product}>
+        <div class="container">
+            <div  >{product.display_title}</div>
+            <div>{product.headline}</div>
+            <!--<div class="description">{product.fields.Description__c.value}</div>
+            --><img class="product-img" src={product.multimedia.src}></img>
+        
+            <a href={product.link.url}> {product.link.url} </a> 
+                </div>
+    </template>
+    <template if:false={product}>
+        <div>Select a movies</div>
+    </template>
+</template>
